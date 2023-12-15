@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RootNamespace>Autoload_control</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\battery-charging.png" />
+    <None Remove="Resources\clock-fill.png" />
+    <None Remove="Resources\gear-wide.png" />
+    <None Remove="Resources\list.png" />
+    <None Remove="Resources\person-fill.png" />
+    <None Remove="Resources\speedometer.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+    <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\battery-charging.png" />
+    <Resource Include="Resources\clock-fill.png" />
+    <Resource Include="Resources\gear-wide.png" />
+    <Resource Include="Resources\list.png" />
+    <Resource Include="Resources\person-fill.png" />
+    <Resource Include="Resources\speedometer.png" />
+  </ItemGroup>
+
+</Project>
