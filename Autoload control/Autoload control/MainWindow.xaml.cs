@@ -1,24 +1,18 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using Autoload_control.Classes;
+using Microsoft.Win32;
 
 namespace Autoload_control
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
+        private List<AutoLoadStruck> _autoLoadStrucks;
+
         public MainWindow()
         {
             InitializeComponent();
+            _autoLoadStrucks = new ParseAutoload().GetAutostartApps();
+            DGProcess.ItemsSource = _autoLoadStrucks;
         }
     }
 }

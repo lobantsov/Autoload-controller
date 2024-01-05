@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:Autoload_control"
         mc:Ignorable="d"
         Title="Autoload control" Height="450" Width="800"
-        Background="#33204d">
+        Background="#33204d"
+        >
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -104,6 +105,20 @@
                 </Grid>
             </Button>
         </StackPanel>
-
+        <Grid Name="GridProcess" Grid.Column="1" Visibility="Collapsed">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <DataGrid Name="DGProcess" Background="Transparent" Grid.Row="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Назва" Binding="{Binding Name}" Width="auto" IsReadOnly="True"/>
+                    <DataGridCheckBoxColumn Header="Статус" Binding="{Binding IsEnabled}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Name="GridMode" Column="1">
+            <CheckBox  Style="{StaticResource MaterialDesignSwitchLightToggleButton}"/>
+        </Grid>
     </Grid>
 </Window>
