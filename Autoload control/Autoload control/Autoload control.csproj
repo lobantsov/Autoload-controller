@@ -22,6 +22,7 @@
     <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
     <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
     <PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.0" />
+    <PackageReference Include="Microsoft.WindowsAPICodePack.Shell" Version="1.1.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +32,7 @@
     <Resource Include="Resources\list.png" />
     <Resource Include="Resources\person-fill.png" />
     <Resource Include="Resources\speedometer.png" />
+    <None Remove="Resources\Viber.exe.ico" />
   </ItemGroup>
 
 </Project>

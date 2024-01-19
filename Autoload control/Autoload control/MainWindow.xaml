@@ -105,20 +105,29 @@
                 </Grid>
             </Button>
         </StackPanel>
-        <Grid Name="GridProcess" Grid.Column="1" Visibility="Collapsed">
+        <Grid Name="GridProcess" Grid.Column="1" Visibility="Visible">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <DataGrid Name="DGProcess" Background="Transparent" Grid.Row="0">
+            <DataGrid Name="DGProcess" Background="Transparent" Grid.Row="0" CanUserAddRows="False" 
+                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Назва" Binding="{Binding Name}" Width="auto" IsReadOnly="True"/>
-                    <DataGridCheckBoxColumn Header="Статус" Binding="{Binding IsEnabled}"/>
+                    <DataGridTemplateColumn Header="Назва">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="{Binding IconPath}" Width="16" Height="16" Margin="0,0,5,0" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridCheckBoxColumn Header="Статус" Binding="{Binding IsEnabled}" IsReadOnly="True"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
         <Grid Name="GridMode" Column="1">
-            <CheckBox  Style="{StaticResource MaterialDesignSwitchLightToggleButton}"/>
         </Grid>
     </Grid>
 </Window>
