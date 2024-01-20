@@ -9,7 +9,7 @@ namespace Autoload_control.Classes
     class AutoLoadStruck
     {
         public string Name { get; set; }
-        public string Command;
+        public string Command { get; set; }
         public string Location;
         public string User;
         public string IconPath { get; set; }

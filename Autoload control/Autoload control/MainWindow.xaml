@@ -74,8 +74,8 @@
             </Button>
             <Button Name="BTProcesses" Style="{StaticResource RoundButton}">
                 <Grid>
-                    <Image Source="Resources/speedometer.png" Height="24" Width="25" Style="{StaticResource ImageStyle}" />
-                    <Label Content="Процеси" Style="{StaticResource LableStyle}"/>
+                    <Image Source="Resources/speedometer.png" Height="24" Width="25" Style="{StaticResource ImageStyle}" MouseDown="LBProcesses_OnMouseDown"/>
+                    <Label Name="LBProcesses" Content="Процеси" Style="{StaticResource LableStyle}" MouseDown="LBProcesses_OnMouseDown"/>
                 </Grid>
             </Button>
             <Button Name="BTEventPlanner" Style="{StaticResource RoundButton}">
@@ -111,7 +111,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <DataGrid Name="DGProcess" Background="Transparent" Grid.Row="0" CanUserAddRows="False" 
-                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False">
+                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" Visibility="Collapsed">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Назва">
                         <DataGridTemplateColumn.CellTemplate>
@@ -122,8 +122,20 @@
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"/>
+                            </Style>
+                        </DataGridTemplateColumn.CellStyle>
                     </DataGridTemplateColumn>
                     <DataGridCheckBoxColumn Header="Статус" Binding="{Binding IsEnabled}" IsReadOnly="True"/>
+                    <DataGridTextColumn Header="Шлях" Binding="{Binding Command}" IsReadOnly="True">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <EventSetter Event="MouseDoubleClick" Handler="EventSetter_OnHandler"/>
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
