@@ -60,13 +60,13 @@
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="107*"/>
-            <ColumnDefinition Width="293*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <Border BorderBrush="White" BorderThickness="0,0,2,0" Height="433"/>
+            <Border BorderBrush="White" BorderThickness="0,0,2,0" Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}}"/>
         </StackPanel>
-        <StackPanel Name="STPButtons">
+        <StackPanel Name="STPButtons" Margin="4 0 15 0">
             <Button Name="BTList"  Style="{StaticResource RoundButton}">
                 <Grid>
                     <Image Source="Resources/list.png" Height="30" Width="30" Style="{StaticResource ImageStyle}"/>
@@ -91,7 +91,7 @@
                 </Grid>
             </Button>
         </StackPanel>
-        <StackPanel Margin="0,316,0,0" >
+        <StackPanel Margin="4,316,15,0" VerticalAlignment="Bottom" >
             <Button Name="BTCreator" Style="{StaticResource RoundButton}">
                 <Grid>
                     <Image Source="Resources/person-fill.png" Height="24" Width="25" Style="{StaticResource ImageStyle}" />
@@ -111,7 +111,8 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <DataGrid Name="DGProcess" Background="Transparent" Grid.Row="0" CanUserAddRows="False" 
-                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" Visibility="Collapsed">
+                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" Visibility="Collapsed"
+                      Margin="10 0 0 0">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Назва">
                         <DataGridTemplateColumn.CellTemplate>
