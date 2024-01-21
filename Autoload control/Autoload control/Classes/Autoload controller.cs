@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.ServiceModel.Channels;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.Win32;
+using System.Diagnostics;
+using System.IO;
 
 namespace Autoload_control.Classes
 {
@@ -24,11 +18,26 @@ namespace Autoload_control.Classes
         {
             if (SystemParameters.PowerLineStatus == PowerLineStatus.Offline)
             {
-                foreach (var VARIABLE in _autoLoadStrucks)
+                foreach (var autoLoadStruck in _autoLoadStrucks)
                 {
-                    Console.WriteLine(VARIABLE.Name);
+                    string processNameWithoutExtension = Path.GetFileNameWithoutExtension(autoLoadStruck.Command);
+
+                    Process[] processes = Process.GetProcessesByName(processNameWithoutExtension);
+
+                    foreach (Process process in processes)
+                    {
+                        try
+                        {
+                            process.Kill();
+                            Console.WriteLine($"Завершено процес: {process.ProcessName}");
+                        }
+                        catch (Exception exception)
+                        { }
+                    }
                 }
             }
+
+
         }
     }
 }

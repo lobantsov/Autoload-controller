@@ -36,6 +36,8 @@
     <None Remove="Resources\LCico.jpg" />
     <None Remove="Resources\icon.jpg" />
     <Resource Include="Resources\icon.jpg" />
+    <None Remove="Resources\stack.png" />
+    <Resource Include="Resources\stack.png" />
   </ItemGroup>
 
 </Project>

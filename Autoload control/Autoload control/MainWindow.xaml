@@ -6,49 +6,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:Autoload_control"
         mc:Ignorable="d"
-        Title="Autoload control" Height="450" Width="800"
+        Title="Autoload control" Height="450" Width="810"
         Background="#33204d"
         Icon="Resources/icon.jpg">
-    <Window.Resources>
-        <Style x:Key="RoundButton" TargetType="Button">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Width" Value="200"/>
-            <Setter Property="Margin" Value="0 10 0 10"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="10">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="DarkSlateBlue"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="DarkBlue"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="ImageStyle" TargetType="Image">
-            <Setter Property="Margin" Value="10 0 140 0"/>
-        </Style>
-
-        <Style x:Key="LableStyle" TargetType="Label">
-            <Setter Property="Margin" Value="40 1 0 0"/>
-            <Setter Property="FontStyle" Value="Normal"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="FontWeight" Value="DemiBold"/>
-            <Setter Property="Foreground" Value="White"/>
-        </Style>
-    </Window.Resources>
-
     <Grid Name="MainGrid">
         <Grid.Resources>
             <Style TargetType="Button">
@@ -73,8 +33,8 @@
                     <Image Source="Resources/list.png" Height="30" Width="30" Style="{StaticResource ImageStyle}"/>
                 </Grid>
             </Button>
-            <Button Name="BTProcesses" Style="{StaticResource RoundButton}">
-                <Grid MouseDown="LBProcesses_OnMouseDown" Tag="11">
+            <Button Name="BTProcesses" Style="{StaticResource RoundButton}" Click="BTWorkMode_OnClick" Tag="11">
+                <Grid>
                     <Image Source="Resources/speedometer.png" Height="24" Width="25"
                            Style="{StaticResource ImageStyle}" />
                     <Label Name="LBProcesses" Content="Процеси" Style="{StaticResource LableStyle}"/>
@@ -86,8 +46,8 @@
                     <Label Content="Планувальник подій" Style="{StaticResource LableStyle}" />
                 </Grid>
             </Button>
-            <Button Name="BTWorkMode" Style="{StaticResource RoundButton}">
-                <Grid Tag="13" MouseDown="LBProcesses_OnMouseDown">
+            <Button Name="BTWorkMode" Style="{StaticResource RoundButton}" Click="BTWorkMode_OnClick" Tag="13">
+                <Grid>
                     <Image Source="Resources/battery-charging.png" Height="24" Width="25" Style="{StaticResource ImageStyle}"/>
                     <Label Content="Режим роботи" Style="{StaticResource LableStyle}" />
                 </Grid>
@@ -141,7 +101,7 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid Name="GridMode" Column="1" Visibility="Collapsed" Tag="3">
+        <Grid Name="GridMode" Column="1" Visibility="Visible" Tag="3">
            <StackPanel Name="ComponetForModeStackPanel" Margin="15 40 0 0">
                <StackPanel Orientation="Horizontal" Name="TurnOffAplicationQStackPanel">
                    <ToggleButton Name="TurnOffAplicationQToggleButton" Background="CornflowerBlue" IsChecked="True"/>
@@ -154,6 +114,36 @@
                <StackPanel Orientation="Horizontal" Name="BackApplicationQStackPanel" Margin="0 15 0 0">
                    <ToggleButton Name="BackApplicationQToggleButton" Background="CornflowerBlue" IsChecked="True"/>
                    <Label Content="Перевіряти наявність живлення при запуску Windows?" Style="{StaticResource LableStyle}" Margin="10 0 0 0"/>
+               </StackPanel>
+               <StackPanel Orientation="Vertical" Name="WhatAppCloasedQStackPanel" Margin="0 15 0 0">
+                   <RadioButton x:Name="AutoLoadRadioButton" GroupName="ButtonGroup" Margin="0 0 10 0" Style="{StaticResource RadioButtonStyle}"
+                                IsChecked="True">
+                       <RadioButton.Content>
+                           Вимикати/вмикати додатки з автозавантаження
+                       </RadioButton.Content>
+                   </RadioButton>
+                   <Border BorderBrush="White" BorderThickness="0,0,0,1"
+                           Height="20" HorizontalAlignment="Stretch" Margin="0 -13 0 7"/>
+                   <StackPanel Orientation="Horizontal">
+                       <RadioButton x:Name="ManualAppRadioButton" GroupName="ButtonGroup" Margin="0 0 0 0" Style="{StaticResource RadioButtonStyle}">
+                           <RadioButton.Content>
+                               Обрати додатки самостійно
+                           </RadioButton.Content>
+                       </RadioButton>
+                       <Button Name="OpenSelectionButton" Height="20" Width="20" Margin="5 0 0 0" Style="{StaticResource RoundButton}" 
+                               Click="OpenSelectionButton_OnClick">
+                           <StackPanel>
+                               <Image Source="Resources/stack.png" Width="15" Height="15"/>
+                           </StackPanel>
+                       </Button>
+                   </StackPanel>
+                   <Border BorderBrush="White" BorderThickness="0,0,0,1"
+                           Height="20" HorizontalAlignment="Stretch" Margin="0 -13 0 7"/>
+                   <RadioButton x:Name="ActivAppRadioButton" GroupName="ButtonGroup" Margin="0 0 10 0" Style="{StaticResource RadioButtonStyle}">
+                       <RadioButton.Content>
+                           Вимикати/вмикати активні додатки
+                       </RadioButton.Content>
+                   </RadioButton>
                </StackPanel>
            </StackPanel>
         </Grid>

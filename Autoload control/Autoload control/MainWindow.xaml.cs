@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.IO;
 using Microsoft.Win32;
 
 namespace Autoload_control
@@ -13,10 +14,29 @@ namespace Autoload_control
         private List<ApplicationStruck> _autoLoadStrucks;
         private Autoload_controller _autoloadController;
         private ParseActiveProcess _activeProcess;
+        private SelectionAppWindow selectionAppWindow;
 
         public MainWindow()
         {
             InitializeComponent();
+            try
+            {
+                string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Icons");
+                if (!Directory.Exists(folderPath))
+                {
+                    Directory.CreateDirectory(folderPath);
+                    Console.WriteLine("created");
+                }
+                else
+                {
+                    Console.WriteLine("exist");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Erorr {ex.Message}");
+            }
+
             _autoLoadStrucks = new ParseAutoload().GetStartupApplications();
             // foreach (var VARIABLE in _autoLoadStrucks)
             // {
@@ -28,10 +48,13 @@ namespace Autoload_control
             //     Console.WriteLine("-------------------------------------");
             // }
             DGProcess.ItemsSource = _autoLoadStrucks;
-            _autoloadController = new Autoload_controller(_autoLoadStrucks);
+
+
+
 
             _activeProcess = new ParseActiveProcess();
-            var a =_activeProcess.GetActiveApplication();
+            var a = _activeProcess.GetActiveApplication();
+            _autoloadController = new Autoload_controller(null);
         }
 
         private void DataGridCell_MouseDoubleClick(object sender, RoutedEventArgs e)
@@ -50,28 +73,10 @@ namespace Autoload_control
                 Process.Start("explorer.exe", command);
             }
             catch (Exception exception)
-            { }
-        }
-
-        private void LBProcesses_OnMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            foreach (var control in GetAllControls(this))
             {
-                if (control is Grid grid && grid.Tag != null && Convert.ToInt32(grid.Tag) < 10)
-                {
-                    grid.Visibility = Visibility.Collapsed;
-
-                    if (sender is FrameworkElement frameworkElement && frameworkElement.Tag != null)
-                    {
-                        if (frameworkElement.Tag.ToString() == (Convert.ToInt32(grid.Tag)+10).ToString())
-                        {
-                            grid.Visibility = Visibility.Visible;
-                        }
-                    }
-                }
             }
-
         }
+
         private IEnumerable<DependencyObject> GetAllControls(DependencyObject parent)
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
@@ -81,7 +86,36 @@ namespace Autoload_control
                 {
                     yield return descendant;
                 }
+
                 yield return child;
+            }
+        }
+
+        private void BTWorkMode_OnClick(object sender, RoutedEventArgs e)
+        {
+            foreach (var control in GetAllControls(this))
+            {
+                if (control is Grid grid && grid.Tag != null && Convert.ToInt32(grid.Tag) < 10)
+                {
+                    grid.Visibility = Visibility.Collapsed;
+
+                    if (sender is FrameworkElement frameworkElement && frameworkElement.Tag != null)
+                    {
+                        if (frameworkElement.Tag.ToString() == (Convert.ToInt32(grid.Tag) + 10).ToString())
+                        {
+                            grid.Visibility = Visibility.Visible;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void OpenSelectionButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            selectionAppWindow = new SelectionAppWindow();
+            if (selectionAppWindow.ShowDialog() == true)
+            {
+                
             }
         }
     }
