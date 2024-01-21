@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.ServiceModel.Channels;
 using System.ServiceProcess;
 using System.Text;
@@ -12,17 +13,22 @@ namespace Autoload_control.Classes
 {
     class Autoload_controller
     {
-        public Autoload_controller()
+        private List<ApplicationStruck> _autoLoadStrucks;
+        public Autoload_controller(List<ApplicationStruck> _autoLoadStrucks)
         {
+            this._autoLoadStrucks = _autoLoadStrucks;
             SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
-            PowerLineStatus powerLineStatus = SystemParameters.PowerLineStatus;
-            MessageBox.Show("Power line status: " + powerLineStatus);
-
         }
 
         private void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)
         {
-            MessageBox.Show("woi");
+            if (SystemParameters.PowerLineStatus == PowerLineStatus.Offline)
+            {
+                foreach (var VARIABLE in _autoLoadStrucks)
+                {
+                    Console.WriteLine(VARIABLE.Name);
+                }
+            }
         }
     }
 }

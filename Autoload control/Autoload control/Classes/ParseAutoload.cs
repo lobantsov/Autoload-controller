@@ -10,10 +10,10 @@ namespace Autoload_control.Classes
 {
     class ParseAutoload
     {
-        private List<AutoLoadStruck> autoloadList;
-        public List<AutoLoadStruck> GetStartupApplications()
+        private List<ApplicationStruck> autoloadList;
+        public List<ApplicationStruck> GetStartupApplications()
         {
-            autoloadList = new List<AutoLoadStruck>();
+            autoloadList = new List<ApplicationStruck>();
 
             // GetStartupApplications(Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"));
             // GetStartupApplications(Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run"));
@@ -53,25 +53,7 @@ namespace Autoload_control.Classes
         //             autoloadList.Add(appInfo);
         //         }
         //     }
-        // }
-        private bool IsAutoLoadEnabled(string appName)
-        {
-            RegistryKey keyCurrentUser = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
-            RegistryKey keyLocalMachine = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
-
-            bool isEnabled = false;
-
-            if (keyCurrentUser != null && keyCurrentUser.GetValue(appName) != null)
-            {
-                isEnabled = true;
-            }
-            else if (keyLocalMachine != null && keyLocalMachine.GetValue(appName) != null)
-            {
-                isEnabled = true;
-            }
-
-            return isEnabled;
-        }
+        //
         
         private void GetThirdPartyAutoStartApps()
         {
@@ -101,10 +83,9 @@ namespace Autoload_control.Classes
                         {
                             command = GetShortcutTargetFile(Path.GetFileName(command));
                         }
-                        autoloadList.Add(new AutoLoadStruck()
+                        autoloadList.Add(new ApplicationStruck()
                         {
                             Name = Path.GetFileName(command),
-                            IsEnabled = IsAutoLoadEnabled(Path.GetFileName(command)),
                             Command = command,
                             Location = location,
                             User = user
@@ -125,7 +106,7 @@ namespace Autoload_control.Classes
                 string[] files = Directory.GetFiles(path);
                 foreach (string file in files)
                 {
-                    autoloadList.Add(new AutoLoadStruck()
+                    autoloadList.Add(new ApplicationStruck()
                     {
                         Name = Path.GetFileName(file)
                     });
@@ -161,7 +142,6 @@ namespace Autoload_control.Classes
                                 iconFilePath = @$"Icons\{filename}.ico";
                                 if (!File.Exists(iconFilePath))
                                 {
-
                                     using (FileStream stream = new FileStream(iconFilePath, FileMode.Create))
                                     {
                                         fileIcon.Save(stream);

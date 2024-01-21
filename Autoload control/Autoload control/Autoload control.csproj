@@ -33,6 +33,9 @@
     <Resource Include="Resources\person-fill.png" />
     <Resource Include="Resources\speedometer.png" />
     <None Remove="Resources\Viber.exe.ico" />
+    <None Remove="Resources\LCico.jpg" />
+    <None Remove="Resources\icon.jpg" />
+    <Resource Include="Resources\icon.jpg" />
   </ItemGroup>
 
 </Project>

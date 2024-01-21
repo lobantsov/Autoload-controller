@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Autoload control" Height="450" Width="800"
         Background="#33204d"
-        >
+        Icon="Resources/icon.jpg">
     <Window.Resources>
         <Style x:Key="RoundButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -64,7 +64,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <StackPanel>
-            <Border BorderBrush="White" BorderThickness="0,0,2,0" Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}}"/>
+            <Border BorderBrush="White" BorderThickness="0,0,2,0"
+                    Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Window}}" />
         </StackPanel>
         <StackPanel Name="STPButtons" Margin="4 0 15 0">
             <Button Name="BTList"  Style="{StaticResource RoundButton}">
@@ -73,9 +74,10 @@
                 </Grid>
             </Button>
             <Button Name="BTProcesses" Style="{StaticResource RoundButton}">
-                <Grid>
-                    <Image Source="Resources/speedometer.png" Height="24" Width="25" Style="{StaticResource ImageStyle}" MouseDown="LBProcesses_OnMouseDown"/>
-                    <Label Name="LBProcesses" Content="Процеси" Style="{StaticResource LableStyle}" MouseDown="LBProcesses_OnMouseDown"/>
+                <Grid MouseDown="LBProcesses_OnMouseDown" Tag="11">
+                    <Image Source="Resources/speedometer.png" Height="24" Width="25"
+                           Style="{StaticResource ImageStyle}" />
+                    <Label Name="LBProcesses" Content="Процеси" Style="{StaticResource LableStyle}"/>
                 </Grid>
             </Button>
             <Button Name="BTEventPlanner" Style="{StaticResource RoundButton}">
@@ -85,9 +87,9 @@
                 </Grid>
             </Button>
             <Button Name="BTWorkMode" Style="{StaticResource RoundButton}">
-                <Grid>
-                    <Image Source="Resources/battery-charging.png" Height="24" Width="25" Style="{StaticResource ImageStyle}" />
-                    <Label Content="Режим роботи" Style="{StaticResource LableStyle}"/>
+                <Grid Tag="13" MouseDown="LBProcesses_OnMouseDown">
+                    <Image Source="Resources/battery-charging.png" Height="24" Width="25" Style="{StaticResource ImageStyle}"/>
+                    <Label Content="Режим роботи" Style="{StaticResource LableStyle}" />
                 </Grid>
             </Button>
         </StackPanel>
@@ -105,14 +107,14 @@
                 </Grid>
             </Button>
         </StackPanel>
-        <Grid Name="GridProcess" Grid.Column="1" Visibility="Visible">
+        <Grid Name="GridProcess" Grid.Column="1" Visibility="Collapsed" Tag="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="6*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <DataGrid Name="DGProcess" Background="Transparent" Grid.Row="0" CanUserAddRows="False" 
-                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False" Visibility="Collapsed"
-                      Margin="10 0 0 0">
+                      CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False"
+                      Margin="10 0 0 0" RowHeight="30">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Назва">
                         <DataGridTemplateColumn.CellTemplate>
@@ -129,7 +131,6 @@
                             </Style>
                         </DataGridTemplateColumn.CellStyle>
                     </DataGridTemplateColumn>
-                    <DataGridCheckBoxColumn Header="Статус" Binding="{Binding IsEnabled}" IsReadOnly="True"/>
                     <DataGridTextColumn Header="Шлях" Binding="{Binding Command}" IsReadOnly="True">
                         <DataGridTextColumn.CellStyle>
                             <Style TargetType="DataGridCell">
@@ -140,7 +141,21 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Grid Name="GridMode" Column="1">
+        <Grid Name="GridMode" Column="1" Visibility="Collapsed" Tag="3">
+           <StackPanel Name="ComponetForModeStackPanel" Margin="15 40 0 0">
+               <StackPanel Orientation="Horizontal" Name="TurnOffAplicationQStackPanel">
+                   <ToggleButton Name="TurnOffAplicationQToggleButton" Background="CornflowerBlue" IsChecked="True"/>
+                   <Label Content="Вимкнути додатки при втраті живлення?" Style="{StaticResource LableStyle}" Margin="10 0 0 0"/>
+               </StackPanel>
+               <StackPanel Orientation="Horizontal" Name="TurnOnQStackPanel" Margin="0 15 0 0">
+                   <ToggleButton Name="TurnOnQToggleButton" Background="CornflowerBlue" IsChecked="True"/>
+                   <Label Content="Відновити роботу додатків при відновлені живлення?" Style="{StaticResource LableStyle}" Margin="10 0 0 0"/>
+               </StackPanel>
+               <StackPanel Orientation="Horizontal" Name="BackApplicationQStackPanel" Margin="0 15 0 0">
+                   <ToggleButton Name="BackApplicationQToggleButton" Background="CornflowerBlue" IsChecked="True"/>
+                   <Label Content="Перевіряти наявність живлення при запуску Windows?" Style="{StaticResource LableStyle}" Margin="10 0 0 0"/>
+               </StackPanel>
+           </StackPanel>
         </Grid>
     </Grid>
 </Window>
