@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SelectionAppWindow" Height="490" Width="800"
         Background="#33204d"
-        Icon="Resources/icon.jpg">
+        Icon="Resources/icon.jpg" Closing="SelectionAppWindow_OnClosing">
     <Window.Resources>
         <Style x:Key="StyleTextBlock" TargetType="TextBlock">
             <Setter Property="FontStyle" Value="Normal"/>
@@ -46,12 +46,33 @@
              <DataGrid Name="ApplicationForSelectedDataGrid" Background="Transparent" Grid.Row="0" CanUserAddRows="False" 
                               CanUserReorderColumns="False" CanUserResizeRows="False" CanUserSortColumns="False" AutoGenerateColumns="False"
                               RowHeight="30" Width="300" Height="400" HorizontalAlignment="Left" BorderBrush="White" BorderThickness="1">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Назва" IsReadOnly="True" Width="auto"/>
-                        </DataGrid.Columns>
+                 <DataGrid.Columns>
+                     <DataGridTemplateColumn Header="Назва" MaxWidth="200">
+                         <DataGridTemplateColumn.CellTemplate>
+                             <DataTemplate>
+                                 <StackPanel Orientation="Horizontal">
+                                     <Image Source="{Binding IconPath}" Width="16" Height="16" Margin="5 0 10 0"/>
+                                     <TextBlock Text="{Binding Name}" />
+                                 </StackPanel>
+                             </DataTemplate>
+                         </DataGridTemplateColumn.CellTemplate>
+                         <DataGridTemplateColumn.CellStyle>
+                             <Style TargetType="DataGridCell">
+                                 <!-- <EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"/> -->
+                             </Style>
+                         </DataGridTemplateColumn.CellStyle>
+                     </DataGridTemplateColumn>
+                     <DataGridTemplateColumn Header="Обрані">
+                         <DataGridTemplateColumn.CellTemplate>
+                             <DataTemplate>
+                                 <CheckBox Content="" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" Checked="ToggleButton_OnChecked"/>
+                             </DataTemplate>
+                         </DataGridTemplateColumn.CellTemplate>
+                     </DataGridTemplateColumn>
+                 </DataGrid.Columns>
              </DataGrid>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10 0 10 0">
-                <Button Style="{StaticResource RoundButtonStyle}" Margin="0 0 0 15">
+                <Button Name="PlusButton" Style="{StaticResource RoundButtonStyle}" Margin="0 0 0 15" Click="PlusButton_OnClick">
                     <TextBlock Style="{StaticResource StyleTextBlock}" Text="+"/>
                 </Button>
                 <Button Style="{StaticResource RoundButtonStyle}">
@@ -68,10 +89,10 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Style="{StaticResource RoundButtonStyle}">
-                        <TextBlock Style="{StaticResource StyleTextBlock}" Text="OK"/>
+                    <Button Name="CancelButton" Style="{StaticResource RoundButtonStyle}" Click="CancelButton_OnClick">
+                        <TextBlock Style="{StaticResource StyleTextBlock}" Text="Cancel"/>
                     </Button>
-                    <Button Style="{StaticResource RoundButtonStyle}">
+                    <Button Style="{StaticResource RoundButtonStyle}" Click="ButtonBase_OnClick">
                         <TextBlock Style="{StaticResource StyleTextBlock}" Text="OK"/>
                     </Button>
                 </StackPanel>

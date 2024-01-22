@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.IO;
+using MaterialDesignThemes.Wpf;
 using Microsoft.Win32;
 
 namespace Autoload_control
@@ -12,13 +13,19 @@ namespace Autoload_control
     public partial class MainWindow : Window
     {
         private List<ApplicationStruck> _autoLoadStrucks;
-        private Autoload_controller _autoloadController;
-        private ParseActiveProcess _activeProcess;
-        private SelectionAppWindow selectionAppWindow;
+        private List<ApplicationStruck> _activeProcessStrucks;
+        private List<ApplicationStruck> _manulSelectStrucks;
+        private Autoload_controller _autoloadController;//control powermode
+        private ParseActiveProcess _activeProcess;//active process
+        private SelectionAppWindow selectionAppWindow;//form for select app
+        private string ApplicationWorkMode = "";
 
         public MainWindow()
         {
             InitializeComponent();
+            selectionAppWindow = new SelectionAppWindow();
+
+            //folder creation
             try
             {
                 string folderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Icons");
@@ -52,8 +59,7 @@ namespace Autoload_control
 
 
 
-            _activeProcess = new ParseActiveProcess();
-            var a = _activeProcess.GetActiveApplication();
+            _activeProcessStrucks = new ParseActiveProcess().GetActiveApplication();
             _autoloadController = new Autoload_controller(null);
         }
 
@@ -73,27 +79,14 @@ namespace Autoload_control
                 Process.Start("explorer.exe", command);
             }
             catch (Exception exception)
-            {
-            }
+            { }
         }
 
-        private IEnumerable<DependencyObject> GetAllControls(DependencyObject parent)
-        {
-            for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                foreach (var descendant in GetAllControls(child))
-                {
-                    yield return descendant;
-                }
-
-                yield return child;
-            }
-        }
+        
 
         private void BTWorkMode_OnClick(object sender, RoutedEventArgs e)
         {
-            foreach (var control in GetAllControls(this))
+            foreach (var control in FindUIElement.GetAllControls(this))
             {
                 if (control is Grid grid && grid.Tag != null && Convert.ToInt32(grid.Tag) < 10)
                 {
@@ -113,9 +106,32 @@ namespace Autoload_control
         private void OpenSelectionButton_OnClick(object sender, RoutedEventArgs e)
         {
             selectionAppWindow = new SelectionAppWindow();
-            if (selectionAppWindow.ShowDialog() == true)
+            selectionAppWindow.ApplicationForSelectedDataGrid.ItemsSource = _activeProcessStrucks;
+            selectionAppWindow.ShowDialog();
+            if (selectionAppWindow.DialogResult == true)
             {
                 
+            }
+        }
+
+        private void AutoLoadRadioButton_OnChecked(object sender, RoutedEventArgs e)
+        {
+            if (OpenSelectionButton != null)
+                OpenSelectionButton.IsEnabled = false;
+            switch (((RadioButton)sender).Tag?.ToString())
+            {
+             case "0":
+                 ApplicationWorkMode = "AutoloadApplication";
+                 break;
+             
+             case "1":
+                 OpenSelectionButton.IsEnabled = true;
+                 ApplicationWorkMode = "ManualSelectApplication";
+                 break;
+             
+             case "2":
+                 ApplicationWorkMode = "ActiveAplication";
+                 break;
             }
         }
     }

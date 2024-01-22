@@ -5,12 +5,14 @@ using System.IO;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using System.Reflection;
+using Autoload_control.Classes.GetIco;
 
 namespace Autoload_control.Classes
 {
     class ParseAutoload
     {
         private List<ApplicationStruck> autoloadList;
+        GetIcons _getIcons = GetIcons.GetInstace();
         public List<ApplicationStruck> GetStartupApplications()
         {
             autoloadList = new List<ApplicationStruck>();
@@ -23,7 +25,7 @@ namespace Autoload_control.Classes
             foreach (var VARIABLE in autoloadList)
             {
                 VARIABLE.IconPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icons",
-                    GetFileIcon(VARIABLE.Command, VARIABLE.Name));
+                    _getIcons.GetFileIcon(VARIABLE.Command, VARIABLE.Name));
                 
                 if (VARIABLE.IconPath.Contains("desktop.ini.ico"))
                 {
@@ -124,44 +126,7 @@ namespace Autoload_control.Classes
             }
         }
 
-        public string GetFileIcon(string filePath, string filename)
-        {
-            try
-            {
-                string iconFilePath = "";
-                    if (File.Exists(filePath))
-                    {
-                        FileInfo fileInfo = new FileInfo(filePath);
-
-                        if (File.Exists(fileInfo.FullName))
-                        {
-                            Icon fileIcon = Icon.ExtractAssociatedIcon(fileInfo.FullName);
-
-                            if (fileIcon != null)
-                            {
-                                iconFilePath = @$"Icons\{filename}.ico";
-                                if (!File.Exists(iconFilePath))
-                                {
-                                    using (FileStream stream = new FileStream(iconFilePath, FileMode.Create))
-                                    {
-                                        fileIcon.Save(stream);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine("File does not exist.");
-                    }
-                return filename+".ico";
-            }
-            catch (Exception ex)
-            {
-                return "";
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
+        
 
         private string GetShortcutTargetFile(string shortcutname)
         {

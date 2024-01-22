@@ -1,14 +1,13 @@
-﻿using System.Drawing;
-using System.Management;
-using Microsoft.Win32;
+﻿using System.Management;
 using System.IO;
-using Microsoft.WindowsAPICodePack.Shell;
-using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using System.Reflection;
+using Autoload_control.Classes.GetIco;
+
 namespace Autoload_control.Classes;
 
 public class ParseActiveProcess
 {
+    GetIcons _getIcons = GetIcons.GetInstace();
     public List<ApplicationStruck> GetActiveApplication()
     {
         List<ApplicationStruck> mainProcesses = new List<ApplicationStruck>();
@@ -23,9 +22,6 @@ public class ParseActiveProcess
                     string mainExecutable = obj["ExecutablePath"] as string;
                     if (Validation(processName, mainExecutable))
                     {
-                        Console.WriteLine($"Process: {processName}");
-                        Console.WriteLine($"Main Executable: {mainExecutable}");
-                        Console.WriteLine();
                         if (!mainProcesses.Any(process => process.Command == mainExecutable))
                         {
                             mainProcesses.Add(new ApplicationStruck()
@@ -35,6 +31,16 @@ public class ParseActiveProcess
                             });
                         }
                     }
+                }
+            }
+            foreach (var VARIABLE in mainProcesses)
+            {
+                VARIABLE.IconPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icons",
+                    _getIcons.GetFileIcon(VARIABLE.Command, VARIABLE.Name));
+                
+                if (VARIABLE.IconPath.Contains("desktop.ini.ico"))
+                {
+                    VARIABLE.IconPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icons","Unknow.exe.ico");
                 }
             }
         }
@@ -53,7 +59,7 @@ public class ParseActiveProcess
             !mainExecutable.ToLower().Contains("\\windows\\systemapps\\") &&
             !mainExecutable.ToLower().Contains("explorer") &&
             !mainExecutable.ToLower().Contains("\\windows\\immersivecontrolpanel\\") &&
-            !mainExecutable.ToLower().Contains("\\WindowsApps\\") &&
+            !mainExecutable.ToLower().Contains("\\windowsapps\\") &&
             processName != null )
             // && processName.ToLower().Contains("your_main_process_identifier"))
             return true;
