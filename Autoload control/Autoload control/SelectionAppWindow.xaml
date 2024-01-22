@@ -85,7 +85,28 @@
                           RowHeight="30" Width="300" Height="400" HorizontalAlignment="Left" BorderBrush="White" BorderThickness="1" MaxHeight="350"
                           Margin="0 20 0 0">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Назва" IsReadOnly="True" Width="auto"/>
+                        <DataGridTemplateColumn Header="Назва" MaxWidth="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding IconPath}" Width="16" Height="16" Margin="5 0 10 0"/>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellStyle>
+                                <Style TargetType="DataGridCell">
+                                    <!-- <EventSetter Event="MouseDoubleClick" Handler="DataGridCell_MouseDoubleClick"/> -->
+                                </Style>
+                            </DataGridTemplateColumn.CellStyle>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Обрані">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

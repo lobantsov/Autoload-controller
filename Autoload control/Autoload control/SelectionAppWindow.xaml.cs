@@ -62,5 +62,8 @@ public partial class SelectionAppWindow : Window
                 }
             }
         }
+
+        SelectedDataGrid.ItemsSource = null;
+        SelectedDataGrid.ItemsSource = _applicationStrucks;
     }
 }
