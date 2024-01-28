@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:Autoload_control"
+        xmlns:classes="clr-namespace:Autoload_control.Classes"
         mc:Ignorable="d"
         Title="SelectionAppWindow" Height="490" Width="800"
         Background="#33204d"
@@ -39,7 +40,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Window.Resources>
     <Grid>
         <StackPanel Margin="20 0 20 0" Orientation="Horizontal">
@@ -62,20 +62,15 @@
                              </Style>
                          </DataGridTemplateColumn.CellStyle>
                      </DataGridTemplateColumn>
-                     <DataGridTemplateColumn Header="Обрані">
-                         <DataGridTemplateColumn.CellTemplate>
-                             <DataTemplate>
-                                 <CheckBox Content="" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" Checked="ToggleButton_OnChecked"/>
-                             </DataTemplate>
-                         </DataGridTemplateColumn.CellTemplate>
-                     </DataGridTemplateColumn>
+                     <DataGridCheckBoxColumn Header="Обрані" Binding="{Binding IsSelected}">
+                     </DataGridCheckBoxColumn>
                  </DataGrid.Columns>
              </DataGrid>
             <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10 0 10 0">
                 <Button Name="PlusButton" Style="{StaticResource RoundButtonStyle}" Margin="0 0 0 15" Click="PlusButton_OnClick">
                     <TextBlock Style="{StaticResource StyleTextBlock}" Text="+"/>
                 </Button>
-                <Button Style="{StaticResource RoundButtonStyle}">
+                <Button Name="MinusButton" Style="{StaticResource RoundButtonStyle}" Click="MinusButton_OnClick">
                     <TextBlock Style="{StaticResource StyleTextBlock}" Text="-"/>
                 </Button>
             </StackPanel>
@@ -100,13 +95,8 @@
                                 </Style>
                             </DataGridTemplateColumn.CellStyle>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="Обрані">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <CheckBox Content="" IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"/>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                        <DataGridCheckBoxColumn Header="Обрані" Binding="{Binding IsSelected}">
+                        </DataGridCheckBoxColumn>
                     </DataGrid.Columns>
                 </DataGrid>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

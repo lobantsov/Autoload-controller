@@ -1,6 +1,7 @@
 ﻿using System.Management;
 using System.IO;
 using System.Reflection;
+using System.Windows.Controls;
 using Autoload_control.Classes.GetIco;
 
 namespace Autoload_control.Classes;

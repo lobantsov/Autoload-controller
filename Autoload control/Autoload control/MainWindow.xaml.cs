@@ -14,7 +14,7 @@ namespace Autoload_control
     {
         private List<ApplicationStruck> _autoLoadStrucks;
         private List<ApplicationStruck> _activeProcessStrucks;
-        private List<ApplicationStruck> _manulSelectStrucks;
+        private List<ApplicationStruck> _manulSelectStrucks = new();
         private Autoload_controller _autoloadController;//control powermode
         private ParseActiveProcess _activeProcess;//active process
         private SelectionAppWindow selectionAppWindow;//form for select app
@@ -23,7 +23,6 @@ namespace Autoload_control
         public MainWindow()
         {
             InitializeComponent();
-            selectionAppWindow = new SelectionAppWindow();
 
             //folder creation
             try
@@ -56,9 +55,6 @@ namespace Autoload_control
             // }
             DGProcess.ItemsSource = _autoLoadStrucks;
 
-
-
-
             _activeProcessStrucks = new ParseActiveProcess().GetActiveApplication();
             _autoloadController = new Autoload_controller(null);
         }
@@ -88,7 +84,7 @@ namespace Autoload_control
         {
             foreach (var control in FindUIElement.GetAllControls(this))
             {
-                if (control is Grid grid && grid.Tag != null && Convert.ToInt32(grid.Tag) < 10)
+                if (control is Grid grid && Convert.ToInt32(grid?.Tag) < 10)
                 {
                     grid.Visibility = Visibility.Collapsed;
 
@@ -105,8 +101,7 @@ namespace Autoload_control
 
         private void OpenSelectionButton_OnClick(object sender, RoutedEventArgs e)
         {
-            selectionAppWindow = new SelectionAppWindow();
-            selectionAppWindow.ApplicationForSelectedDataGrid.ItemsSource = _activeProcessStrucks;
+            selectionAppWindow = new SelectionAppWindow(_activeProcessStrucks, _manulSelectStrucks);
             selectionAppWindow.ShowDialog();
             if (selectionAppWindow.DialogResult == true)
             {

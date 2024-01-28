@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Autoload_control.Classes;
 using System.Windows.Media;
 
@@ -8,15 +9,18 @@ namespace Autoload_control;
 
 public partial class SelectionAppWindow : Window
 {
-    private List<ApplicationStruck> _applicationStrucks;
+    private List<ApplicationStruck> _applicationStrucksForSELECTED;
+    private List<ApplicationStruck> _applicationStrucksForSELECT;
 
-    public SelectionAppWindow()
+    public SelectionAppWindow(List<ApplicationStruck> _applicationStrucksForSELECT,
+        List<ApplicationStruck> _applicationStrucksForSELECTED)
     {
         InitializeComponent();
-        _applicationStrucks = new List<ApplicationStruck>();
-        SelectedDataGrid.ItemsSource = _applicationStrucks;
-        ApplicationForSelectedDataGrid.Items.Clear();
-        ApplicationForSelectedDataGrid.ItemsSource = null;
+        this._applicationStrucksForSELECTED = _applicationStrucksForSELECTED;
+        this._applicationStrucksForSELECT = _applicationStrucksForSELECT;
+        ApplicationForSelectedDataGrid.ItemsSource = _applicationStrucksForSELECT;
+
+        SelectedDataGrid.ItemsSource = _applicationStrucksForSELECTED;
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
@@ -35,35 +39,60 @@ public partial class SelectionAppWindow : Window
         ApplicationForSelectedDataGrid.Items.Clear();
     }
 
-    private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
-    {
-        if (sender is CheckBox checkBox && checkBox.DataContext is ApplicationStruck item)
-        {
-            _applicationStrucks.Add(item);
-        }
-    }
-
     private void PlusButton_OnClick(object sender, RoutedEventArgs e)
     {
-        foreach (var item in ApplicationForSelectedDataGrid.Items)
+        DataGridRowContr(ApplicationForSelectedDataGrid, SelectedDataGrid,
+            _applicationStrucksForSELECTED, _applicationStrucksForSELECT);
+    }
+
+    private void MinusButton_OnClick(object sender, RoutedEventArgs e)
+    {
+        DataGridRowContr(SelectedDataGrid, ApplicationForSelectedDataGrid,
+            _applicationStrucksForSELECT, _applicationStrucksForSELECTED);
+    }
+
+    private static T FindVisualChild<T>(DependencyObject parent) where T : DependencyObject
+    {
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
         {
-            DataGridRow row =
-                (DataGridRow)ApplicationForSelectedDataGrid.ItemContainerGenerator.ContainerFromItem(item);
+            DependencyObject child = VisualTreeHelper.GetChild(parent, i);
 
-            if (row != null)
+            if (child is T result)
             {
-                CheckBox checkBox = FindUIElement.FindVisualChild<CheckBox>(row);
-
-                if (checkBox != null && checkBox.IsChecked == true)
+                return result;
+            }
+            else
+            {
+                T descendant = FindVisualChild<T>(child);
+                if (descendant != null)
                 {
-                    ApplicationStruck data = (ApplicationStruck)row.Item;
-                    if (!_applicationStrucks.Any(process => process.Name == data.Name))
-                        _applicationStrucks.Add(data);
+                    return descendant;
                 }
             }
         }
 
-        SelectedDataGrid.ItemsSource = null;
-        SelectedDataGrid.ItemsSource = _applicationStrucks;
+        return null;
+    }
+
+    private void DataGridRowContr(DataGrid appSelectedDataGrid, DataGrid appSecetDataGrid,
+        List<ApplicationStruck> appList,
+        List<ApplicationStruck> appList2)
+    {
+        // for (int i = 0; i < appList2.Count; i++)
+        // {
+        //     if (appList2[i].IsSelected)
+        //     {
+        //         if (appList.All(process => process.Name != appList2[i].Name))
+        //         {
+        //             appList.Add(appList2[i]);
+        //         }
+        //         appList2.RemoveAt(i);
+        //         i--;
+        //     }
+        // }
+        //
+        // appSecetDataGrid.Items.Refresh();
+        // appSelectedDataGrid.Items.Refresh();
+
     }
 }

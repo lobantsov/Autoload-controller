@@ -5,6 +5,7 @@ using System.IO;
 using Microsoft.WindowsAPICodePack.Shell;
 using Microsoft.WindowsAPICodePack.Shell.PropertySystem;
 using System.Reflection;
+using System.Windows.Controls;
 using Autoload_control.Classes.GetIco;
 
 namespace Autoload_control.Classes
@@ -26,10 +27,11 @@ namespace Autoload_control.Classes
             {
                 VARIABLE.IconPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icons",
                     _getIcons.GetFileIcon(VARIABLE.Command, VARIABLE.Name));
-                
+
                 if (VARIABLE.IconPath.Contains("desktop.ini.ico"))
                 {
-                    VARIABLE.IconPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "Icons","Unknow.exe.ico");
+                    VARIABLE.IconPath = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location),
+                        "Icons", "Unknow.exe.ico");
                 }
             }
 
